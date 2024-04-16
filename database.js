@@ -18,7 +18,7 @@ class Database {
             if(!this.client){
                 this.client = new MongoClient(uri);
                 await this.client.connect();
-                this.db = this.client.db();
+                this.db = this.client.db('My415DB');
             }
         } catch (error) {
             console.error('Database connection error:', error);
