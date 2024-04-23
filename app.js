@@ -11,6 +11,7 @@ const defaultRoute = require('./Routes/index');
 const userRoutes = require('./Routes/userRouter');
 
 app.use('/', defaultRoute);
+app.use('/register', defaultRoute);
 app.use('/user', userRoutes);
 
 

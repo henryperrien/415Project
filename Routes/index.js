@@ -18,5 +18,13 @@ app.get('/', (req, res) => {
             });
     }
 });
+app.get('/register', (req, res) => {
+        fs.readFile('./Views/register.html', 'utf8', (err, data) => {
+            if(err){
+                res.send('some err occured ',err);
+              }
+              res.send(data);
+            });
+    });
 
 module.exports = app;
