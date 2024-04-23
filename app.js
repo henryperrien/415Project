@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const database = require('./database');
-const UserController = require('./Controllers/UserController');
+const UserController = require('./Controllers/user-controller');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

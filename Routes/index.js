@@ -8,7 +8,7 @@ app.use(cookieParser());
 
 app.get('/', (req, res) => {
     if (req.cookies.loggedInUser) {
-        res.send('');
+        app.get('./User/Home');
     } else {
         fs.readFile('./Views/login.html', 'utf8', (err, data) => {
             if(err){

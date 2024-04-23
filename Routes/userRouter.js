@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const User = require('../Models/User');
+const User = require('../Models/user-model');
 
 app.post('/login', async function(req, res) {
     const { username, password } = req.body;
