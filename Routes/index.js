@@ -35,8 +35,18 @@ app.get('/mymessages', (req, res) => {
             });
             
     } else {
-        res.send("");
+        res.send("Not logged in");
     }
 });
 
+app.get('/showcookie', function (req, res) {
+    mycookies=req.cookies;
+    res.send(JSON.stringify(mycookies) + ' <a href="/clearcookie">Delete Cookie</a>');
+  
+  });
+
+  app.get('/clearcookie', function (req, res) {
+    res.clearCookie('auth');
+    res.send('Cookie deleted. <a href="/showcookie">Show Cookies</a>')
+  });
 module.exports = app;
