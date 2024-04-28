@@ -19,7 +19,7 @@ class UserController {
         try {
             const user = await User.findOne({ username, password });
             if (user) {
-                res.cookie('auth', username, { httpOnly: true });
+                res.cookie('auth', username, { maxAge: 60000 });
                 res.status(200).json({ message: 'User logged in successfully' });
             } else {
                 res.status(401).json({ message: 'Invalid credentials' });
