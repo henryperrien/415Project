@@ -1,6 +1,7 @@
 const User = require('../Models/user-model');
 
 
+
 class UserController {
     async register(req, res) {
         const { username, password } = req.body;
@@ -18,7 +19,10 @@ class UserController {
         try {
             const user = await User.findOne({ username, password });
             if (user) {
-                res.status(200).json({ message: 'User logged in successfully' });
+                res.cookie('auth', username);
+                // res.cookie('auth', username, { maxAge: 60000 });
+                res.redirect('/');
+                
             } else {
                 res.status(401).json({ message: 'Invalid credentials' });
             }

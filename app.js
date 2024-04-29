@@ -3,33 +3,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const database = require('./database');
-const UserController = require('./Controllers/user-controller');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const defaultRoute = require('./Routes/index');
+const defaultRoutes = require('./Routes/index');
 const userRoutes = require('./Routes/userRouter');
+const messageRoutes = require('./Routes/messageRouter');
+const topicRoutes = require('./Routes/topicRouter');
 
-app.use('/', defaultRoute);
-app.use('/register', defaultRoute);
+app.use('/', defaultRoutes);
 app.use('/user', userRoutes);
-app.post('/login', async (req, res) => {
-    try {
-        await UserController.login(req, res);
-    } catch (error) {
-        res.status(500).json({ message: 'Error logging in', error: error.message });
-    }
-});
-
-app.post('/register', async (req, res) => {
-    try {
-        await UserController.register(req, res);
-    } catch (error) {
-        res.status(500).json({ message: 'Error registering user', error: error.message });
-    }
-});
-
+app.use('/msgs', messageRoutes);
+app.use('/topic', topicRoutes);
 
 
 

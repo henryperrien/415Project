@@ -1,0 +1,27 @@
+<html>
+<body>
+    <h1>All Topics</h1>
+    <a href="/">Home</a>
+    <a href="/addtopic">Add Topic</a>
+    <div id="topics-list"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/topic')
+                .then(response => response.json())
+                .then(topics => {
+                    const topicsList = document.getElementById('topics-list');
+                    topics.forEach(topic => {
+                        const topicContainer = document.createElement('div');
+                        topicContainer.style.marginBottom = '10px';
+                        const topicName = document.createElement('p');
+                        topicName.textContent = topic.name;
+                        topicContainer.appendChild(topicName);
+                        topicsList.appendChild(topicContainer);
+                    });
+                })
+                .catch(error => console.error('Error fetching topics:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<html>
+   <head>
+      <title>Post Message</title>
+   </head>
+	<body>
+		
+		<form action="/msgs/post" method="POST">
+			<label htmlFor='description'>Description</label>
+			<input type = "text" name = "description" id = "description"/>
+			<label htmlFor='topicId'>Topic</label>
+			<input type = "text" name = "topicId" id = "topicId"/>
+			<br/>
+			<div className="button-container">
+			<Button type="submit">Post</Button>
+		</form>
+		<br>
+		<a href="/clearcookie">Delete Cookie</a>
+   </body>
+</html>

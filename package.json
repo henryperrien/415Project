@@ -8,6 +8,7 @@
         "ejs": "^3.1.9",
         "epress": "^0.0.1-security",
         "express": "^4.19.2",
+        "express-async-handler": "^1.2.0",
         "mongodb": "^6.5.0"
     }
 }

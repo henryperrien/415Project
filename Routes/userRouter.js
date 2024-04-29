@@ -1,17 +1,22 @@
 const express = require('express');
 const app = express();
-const User = require('../Models/user-model');
+const UserController = require('../Controllers/UserController');
 
-app.post('/login', async function(req, res) {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username, password});
-    if(user){
-      res.cookie('loggedInUser',username , { maxAge: 60000 });
-      res.send('Successfully Logged In. Cookie has been set <a href="/showcookie">Show Cookies</a>');
-    } else{
-      res.send('No user found. <a href="/showcookie">Show Cookies</a> <a href="/">Back</a> ');
-    }
-  });
+app.post('/login', async (req, res) => {
+  try {
+      await UserController.login(req, res);
+  } catch (error) {
+      res.status(500).json({ message: 'Error logging in', error: error.message });
+  }
+});
+
+app.post('/register', async (req, res) => {
+  try {
+      await UserController.register(req, res);
+  } catch (error) {
+      res.status(500).json({ message: 'Error registering user', error: error.message });
+  }
+});
 
   
 module.exports = app;
