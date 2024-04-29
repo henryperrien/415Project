@@ -4,6 +4,7 @@ class User {
     constructor(username, password) {
         this.username = username;
         this.password = password;
+        this.subscriptions =[];
     }
 
     async save() {
@@ -24,6 +25,22 @@ class User {
             console.error('Error finding user:', error);
             throw new Error('Error finding user');
         }
+    }
+
+    async subscribe(topicId) {
+        const db = database.getDB();
+        await db.collection('UserCollection415').updateOne(
+            { username: this.username },
+            { $addToSet: { subscriptions: topicId } }
+        );
+    }
+
+    async unsubscribe(topicId) {
+        const db = database.getDB();
+        await db.collection('UserCollection415').updateOne(
+            { username: this.username },
+            { $pull: { subscriptions: topicId } }
+        );
     }
 }
 

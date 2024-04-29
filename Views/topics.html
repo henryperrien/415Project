@@ -1,0 +1,40 @@
+<html>
+<body>
+    <h1>All Topics</h1>
+    <a href="/">Home</a>
+    <a href="/addtopic">Add Topic</a>
+    <div id="topics-list"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/topic')
+                .then(response => response.json())
+                .then(topics => {
+                    const topicsList = document.getElementById('topics-list');
+                    topics.forEach(topic => {
+                        const topicContainer = document.createElement('div');
+                        topicContainer.style.marginBottom = '10px';
+                        const topicName = document.createElement('p');
+                        topicName.textContent = topic.name;
+                        topicContainer.appendChild(topicName);
+                        fetch(`/topic/subscription/${topic.name}`)
+                            .then(response => response.json())
+                            .then(subscriptionStatus => {
+                                const subscribeForm = document.createElement('form');
+                                subscribeForm.action = subscriptionStatus.isSubscribed ? `/topic/unsubscribe/${topic.name}` : `/topic/subscribe/${topic.name}`;
+                                subscribeForm.method = 'POST';
+                                const subscribeButton = document.createElement('button');
+                                subscribeButton.type = 'submit';
+                                subscribeButton.textContent = subscriptionStatus.isSubscribed ? 'Unsubscribe' : 'Subscribe';
+                                subscribeForm.appendChild(subscribeButton);
+                                topicContainer.appendChild(subscribeForm);
+                            })
+                            .catch(error => console.error('Error fetching subscription status:', error));
+                        topicsList.appendChild(topicContainer);
+                    });
+                })
+                .catch(error => console.error('Error fetching topics:', error));
+        });
+    </script>
+</body>
+</html>

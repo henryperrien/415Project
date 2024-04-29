@@ -7,11 +7,15 @@ const database = require('./database');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const defaultRoute = require('./Routes/index');
+const defaultRoutes = require('./Routes/index');
 const userRoutes = require('./Routes/userRouter');
+const messageRoutes = require('./Routes/messageRouter');
+const topicRoutes = require('./Routes/topicRouter');
 
-app.use('/', defaultRoute);
+app.use('/', defaultRoutes);
 app.use('/user', userRoutes);
+app.use('/msgs', messageRoutes);
+app.use('/topic', topicRoutes);
 
 
 
