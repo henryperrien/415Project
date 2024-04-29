@@ -18,6 +18,13 @@ class Message {
                  .find({ username })
                  .toArray();
     }
+
+    static async findMessagesByTopicId(topicName) {
+        const db = require('../database').getDB();
+        return await db.collection('MessagesCollection')
+                 .find({ topicId: topicName })
+                 .toArray();
+    }
 }
 
 module.exports = Message;
