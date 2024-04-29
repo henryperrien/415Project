@@ -4,17 +4,18 @@ const User = require('../Models/User');
 class TopicController {
     async createTopic(req, res) {
         const username = req.cookies.auth;
-            if (!username) {
-                return res.status(401).json({ message: 'Unauthorized' });
-            }
+        if (!username) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
         try {
-            const user = await User.findOne({ username });
-
+            const userData = await User.findOne({ username });
+            const user = new User(userData.username, userData.password);
+            console.log(user instanceof User);
             const { name } = req.body;
             const topic = new Topic(name);
             topic.subscribers.push(username);
             await topic.save();
-            user.subscribe(name);
+            await user.subscribe(name);
             
             res.status(201).json({ message: 'Topic created successfully', topic });
         } catch (error) {
