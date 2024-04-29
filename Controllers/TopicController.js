@@ -63,7 +63,7 @@ class TopicController {
                 return res.status(404).json({ message: 'Topic not found' });
             }
             const topic = new Topic(topicData.name);
-            topic.removeSubscriber(username);
+            topic.addSubscriber(username);
 
             const userData = await User.findOne({ username });
             const user = new User(userData.username, userData.password);
