@@ -1,4 +1,5 @@
 const Message = require('../Models/Message');
+const User = require('../Models/User');
 
 class MessageController {
     async postMessage(req, res) {
@@ -17,8 +18,15 @@ class MessageController {
         if (!username) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
-        const messages = await Message.findMessagesByUsername(username);
-        res.json(messages);
+        const user = await User.findOne({ username });
+        const subscribedTopics = user.subscriptions;
+        
+        const recentMessages = await Promise.all(subscribedTopics.map(async (topicId) => {
+            const messages = await Message.findMessagesByTopicId(topicId);
+            return messages.slice(-2);
+        }));
+        res.json(recentMessages);
+        console.log(recentMessages);
     }
 }
 
