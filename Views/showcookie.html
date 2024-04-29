@@ -1,0 +1,23 @@
+<script>
+app.get('/showcookie', function (req, res) {
+    mycookies=req.cookie;
+    var outstring = '<br>'+ JSON.stringify(mycookies) +'</br>'
+    outstring += '<br>Would you like to start over or clear the cookies?</br>';
+    outstring += '<p><a href="/user/login">Start over</a></p>';
+    outstring += '<p><a href=\"/Clear/Cookies\">Clear Cookies</a></p>';
+    res.send(outstring);
+  });
+  </script>
+
+<script>
+app.get('/Clear/Cookies', function (req, res) {
+    const cookies = req.cookies;
+      Object.keys(cookies).forEach(cookieName => {
+          res.clearCookie(cookieName);
+      });
+      var outstring = '<br>Would you like to start over or view the empty cookies just to make sure?</br>';
+      outstring += '<p><a href="/user/login">Start over</a></p>';
+      outstring += '<p><a href="/View/Cookies\">View Cookies</a></p>';
+      res.send(outstring);
+  });
+</script>
