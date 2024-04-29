@@ -15,7 +15,7 @@ const topicRoutes = require('./Routes/topicRouter');
 app.use('/', defaultRoutes);
 app.use('/user', userRoutes);
 app.use('/msgs', messageRoutes);
-app.use('/topic', topicRoutes)
+app.use('/topic', topicRoutes);
 
 
 

@@ -8,12 +8,12 @@ app.use(cookieParser());
 
 app.get('/', (req, res) => {
     if (req.cookies.auth) {
-        fs.readFile('./Views/postmessage.html', 'utf8', (err, data) => {
-            if(err){
-                res.send('some err occured ',err);
-              }
-              res.send(data);
-            });
+      fs.readFile('./Views/showmessages.html', 'utf8', (err, data) => {
+        if(err){
+          res.status(500).send('An error occurred while reading the topics file.');
+          }
+          res.send(data);
+        });
             
     } else {
         fs.readFile('./Views/login.html', 'utf8', (err, data) => {
@@ -39,14 +39,29 @@ app.get('/addtopic', (req, res) => {
   }
 });
 
-app.get('/mymessages', (req, res) => {
+app.get('/topics', (req, res) => {
+  if (req.cookies.auth) {
+       fs.readFile('./Views/topics.html', 'utf8', (err, data) => {
+           if(err){
+               res.status(500).send('An error occurred while reading the topics file.');
+             } else {
+               res.send(data);
+             }
+           });
+  } else {
+       res.send("Not logged in");
+  }
+ });
+
+
+app.get('/post', (req, res) => {
     if (req.cookies.auth) {
-        fs.readFile('./Views/showmessages.html', 'utf8', (err, data) => {
-            if(err){
-                res.send('some err occured ',err);
-              }
-              res.send(data);
-            });
+            fs.readFile('./Views/postmessage.html', 'utf8', (err, data) => {
+              if(err){
+                  res.send('some err occured ',err);
+                }
+                res.send(data);
+              });
             
     } else {
         res.send("Not logged in");

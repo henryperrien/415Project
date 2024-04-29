@@ -15,6 +15,13 @@ class Topic {
         const db = database.getDB();
         return await db.collection('TopicCollection').findOne(query);
     }
+
+    static async findall() {
+        const db = require('../database').getDB();
+        return await db.collection('TopicCollection')
+                 .find()
+                 .toArray();
+    }
 }
 
 module.exports = Topic;
