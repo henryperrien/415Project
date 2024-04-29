@@ -25,6 +25,20 @@ app.get('/', (req, res) => {
     }
 });
 
+app.get('/addtopic', (req, res) => {
+  if (req.cookies.auth) {
+      fs.readFile('./Views/createtopic.html', 'utf8', (err, data) => {
+          if(err){
+              res.send('some err occured ',err);
+            }
+            res.send(data);
+          });
+          
+  } else {
+      res.send("Not Rogged in");
+  }
+});
+
 app.get('/mymessages', (req, res) => {
     if (req.cookies.auth) {
         fs.readFile('./Views/showmessages.html', 'utf8', (err, data) => {
