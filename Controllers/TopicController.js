@@ -41,16 +41,16 @@ class TopicController {
         }
     
         try {
-            const topic = await Topic.findOne({ topicId });
+            const topic = await Topic.findOne({ name: topicId });
             if (!topic) {
+                console.log(topic);
                 return res.status(404).json({ message: 'Topic not found' });
             }
             topic.subscribers.push(username);
-            await topic.save();
 
-            const user = await User.findOne({ username });
-            user.subscriptions.push(topicId);
-            await user.save();
+            const userData = await User.findOne({ username });
+            const user = new User(userData.username, userData.password);
+            user.subscribe(topicId);
     
             res.status(200).json({ message: 'Subscribed to topic successfully' });
         } catch (error) {
@@ -67,7 +67,7 @@ class TopicController {
         }
 
         try {
-            const topic = await Topic.findOne({ _id: topicId });
+            const topic = await Topic.findOne({ name: topicId });
             if (!topic) {
                 return res.status(404).json({ message: 'Topic not found' });
             }
@@ -76,7 +76,6 @@ class TopicController {
 
             const user = await User.findOne({ username });
             user.subscriptions = user.subscriptions.filter(subscription => subscription.toString() !== topicId);
-            await user.save();
 
             res.status(200).json({ message: 'Unsubscribed from topic successfully' });
         } catch (error) {

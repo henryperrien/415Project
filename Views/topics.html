@@ -17,6 +17,14 @@
                         const topicName = document.createElement('p');
                         topicName.textContent = topic.name;
                         topicContainer.appendChild(topicName);
+                        const subscribeForm = document.createElement('form');
+                        subscribeForm.action = `/topic/subscribe/${topic.name}`; // Use the topic's ID
+                        subscribeForm.method = 'POST';
+                        const subscribeButton = document.createElement('button');
+                        subscribeButton.type = 'submit';
+                        subscribeButton.textContent = 'Subscribe';
+                        subscribeForm.appendChild(subscribeButton);
+                        topicContainer.appendChild(subscribeForm);
                         topicsList.appendChild(topicContainer);
                     });
                 })

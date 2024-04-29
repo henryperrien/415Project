@@ -3,7 +3,13 @@ const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const TopicController = require('../Controllers/TopicController');
 
-router.post('/subscribe/:topicId', asyncHandler(TopicController.subscribeToTopic));
+router.post('/subscribe/:topicId', async (req, res, next) => {
+    try {
+        await TopicController.subscribeToTopic(req, res);
+    } catch (error) {
+        return next(error);
+    }
+});
 router.post('/unsubscribe/:topicId', TopicController.unsubscribeFromTopic);
 router.get('/', async (req, res, next) => {
     try {
