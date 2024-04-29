@@ -23,6 +23,23 @@ class TopicController {
         }
     }
 
+    async checkSubscription(req,res){
+        const topicId = req.params.topicId;
+        const username = req.cookies.auth;
+    
+        try {
+            const topic = await Topic.findOne({ name: topicId });
+            console.log(topic);
+            if (!topic) {
+                return res.status(404).json({ message: 'Topic not found' });
+            }
+            const isSubscribed = topic.subscribers.includes(username);
+
+            res.status(200).json({ isSubscribed });
+        } catch (error) {
+            return error;
+        }
+    }
     async getTopics(req, res) {
         try {
             const topics = await Topic.findall();
@@ -41,12 +58,12 @@ class TopicController {
         }
     
         try {
-            const topic = await Topic.findOne({ name: topicId });
-            if (!topic) {
-                console.log(topic);
+            const topicData = await Topic.findOne({ name: topicId });
+            if (!topicData) {
                 return res.status(404).json({ message: 'Topic not found' });
             }
-            topic.subscribers.push(username);
+            const topic = new Topic(topicData.name);
+            topic.removeSubscriber(username);
 
             const userData = await User.findOne({ username });
             const user = new User(userData.username, userData.password);
@@ -67,15 +84,17 @@ class TopicController {
         }
 
         try {
-            const topic = await Topic.findOne({ name: topicId });
-            if (!topic) {
+            const topicData = await Topic.findOne({ name: topicId });
+            if (!topicData) {
                 return res.status(404).json({ message: 'Topic not found' });
             }
-            topic.subscribers = topic.subscribers.filter(subscriber => subscriber !== username);
-            await topic.save();
+            const topic = new Topic(topicData.name);
+            topic.removeSubscriber(username);
 
-            const user = await User.findOne({ username });
-            user.subscriptions = user.subscriptions.filter(subscription => subscription.toString() !== topicId);
+            const userData = await User.findOne({ username });
+            const user = new User(userData.username, userData.password);
+            console.log(user instanceof User);
+            user.unsubscribe(topicId);
 
             res.status(200).json({ message: 'Unsubscribed from topic successfully' });
         } catch (error) {

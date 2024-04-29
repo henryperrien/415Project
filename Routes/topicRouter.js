@@ -10,6 +10,13 @@ router.post('/subscribe/:topicId', async (req, res, next) => {
         return next(error);
     }
 });
+router.get('/subscription/:topicId', async (req, res, next) => {
+    try {
+        await TopicController.checkSubscription(req, res);
+    } catch (error) {
+        return next(error);
+    }
+});
 router.post('/unsubscribe/:topicId', TopicController.unsubscribeFromTopic);
 router.get('/', async (req, res, next) => {
     try {

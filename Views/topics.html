@@ -17,14 +17,19 @@
                         const topicName = document.createElement('p');
                         topicName.textContent = topic.name;
                         topicContainer.appendChild(topicName);
-                        const subscribeForm = document.createElement('form');
-                        subscribeForm.action = `/topic/subscribe/${topic.name}`; // Use the topic's ID
-                        subscribeForm.method = 'POST';
-                        const subscribeButton = document.createElement('button');
-                        subscribeButton.type = 'submit';
-                        subscribeButton.textContent = 'Subscribe';
-                        subscribeForm.appendChild(subscribeButton);
-                        topicContainer.appendChild(subscribeForm);
+                        fetch(`/topic/subscription/${topic.name}`)
+                            .then(response => response.json())
+                            .then(subscriptionStatus => {
+                                const subscribeForm = document.createElement('form');
+                                subscribeForm.action = subscriptionStatus.isSubscribed ? `/topic/unsubscribe/${topic.name}` : `/topic/subscribe/${topic.name}`;
+                                subscribeForm.method = 'POST';
+                                const subscribeButton = document.createElement('button');
+                                subscribeButton.type = 'submit';
+                                subscribeButton.textContent = subscriptionStatus.isSubscribed ? 'Unsubscribe' : 'Subscribe';
+                                subscribeForm.appendChild(subscribeButton);
+                                topicContainer.appendChild(subscribeForm);
+                            })
+                            .catch(error => console.error('Error fetching subscription status:', error));
                         topicsList.appendChild(topicContainer);
                     });
                 })

@@ -22,6 +22,22 @@ class Topic {
                  .find()
                  .toArray();
     }
+
+    async addSubscriber(username) {
+        const db = database.getDB();
+        await db.collection('TopicCollection').updateOne(
+            { name: this.name },
+            { $addToSet: { subscribers: username } }
+        );
+    }
+
+    async removeSubscriber(username) {
+        const db = database.getDB();
+        await db.collection('TopicCollection').updateOne(
+            { name: this.name },
+            { $pull: { subscribers: username } }
+        );
+    }
 }
 
 module.exports = Topic;
